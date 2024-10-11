@@ -466,11 +466,12 @@ class CourseController extends Controller
 
         // Upload the file          
         if($request->hasFile('video')){
+            if($module->video){
             $videoPath = public_path('uploads/videos/' . $module->video);
             if (file_exists($videoPath)) {
                 // Remove the old image
                 unlink($videoPath);
-            } 
+            } }
             $video = $request->file('video');
             $videofilename = time() . '.' . $video->getClientOriginalExtension();
             $video->move(public_path('uploads/videos'), $videofilename);
@@ -479,11 +480,12 @@ class CourseController extends Controller
         }
 
         if($request->hasFile('pdf')){
+            if($module->document){
             $pdfPath = public_path('uploads/docs/' . $module->document);
             if (file_exists($pdfPath)) {
                 // Remove the old image
                 unlink($pdfPath);
-            } 
+            } }
             $pdf = $request->file('pdf');
             $pdffilename = time() . '.' . $pdf->getClientOriginalExtension();
             $pdf->move(public_path('uploads/docs'), $pdffilename);
