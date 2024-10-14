@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 use Hash;
+// use Maatwebsite\Excel\Facades\Excel;
+// use App\Imports\UsersImport;
+// use Illuminate\Support\Facades\Validator;
+
 
 use Yajra\DataTables\DataTables;
 
@@ -103,35 +107,15 @@ class UserController extends Controller
 
         $user = new User();
         $input = $request->all();
+        $input['password']=Hash::make($pass);
+        $input['token']=$token;
+        $input['offer_revoke']='';
+        
+        $input['status'] = 1;
+        $user->fill($input)->save();
 
-        $lobIdToFind = $input['lob_id']; // assume you want to find this ID
-        $myCourses = Course::whereRaw("FIND_IN_SET($lobIdToFind, lob_id) > 0")->where('status', 1)->get();
-
-        if($myCourses){
-            $input['password']=Hash::make($pass);
-            $input['token']=$token;
-            $input['offer_revoke']='';
-            
-            $input['status'] = 1;
-            // print_r($input);die;
-            $user->fill($input)->save();
-
-            foreach($myCourses as $myCourse){
-               
-                $coursemap = new Coursemap();
-                $coursemap->course_id = $myCourse->id;
-                $coursemap->user_id = $user->id;
-                $coursemap->lob_id= $lobIdToFind;
-                $coursemap->assignment_file='';
-                $coursemap->assignment_remark='';
-                
-                $coursemap->save();
-            }
-
-            return redirect()->back()->with('success','user create successfully');    
-        }else{
-            return redirect()->back()->with('error','Lob course not found');    
-        }
+        return redirect()->back()->with('success','user create successfully');    
+     
     }
 
 
@@ -232,6 +216,88 @@ class UserController extends Controller
         // Return a success message
         return redirect()->back()->with('success','password updated successfully!');    
 
+    }
+
+
+    public function bulkUpload()
+    {
+      
+            return view('admin.user.bulkupload');
+   
+    }
+    public function importUserCsv(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv',
+        ]);
+
+        // Excel::import(new UsersImport, $request->file('user_file'));
+
+        // return redirect()->back()->with('success', 'Users imported successfully.');
+   
+
+        $file = $request->file('file');
+
+        $batchSize = 1000;
+        $batch = [];
+
+        $handle = fopen($file->getRealPath(), 'r');
+
+        $i = 0;
+
+        $batch = [];
+        $count=0;
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        
+            if ($i < $batchSize && $i > 0) {
+                
+                // 0 => "Candidate Id"
+                // 1 => "Name"
+                // 2 => "Email"
+                // 3 => "Phone"
+                // 4 => "Course Applicability (lob id)"
+                // 5 => "Designation"
+                // 6 => "Department"
+                // 7 => "Grade"
+                // 8 => "Employment Type"
+                // 9 => "Date of Joining"
+                // 10 => "Offer Acceptance Date"
+                // 11 => "Recruiter"
+                $checkemail = User::where('email', $data[2])->first();
+                $checkphone = User::where('phone', $data[3])->first();
+                $checkcandidate_id = User::where('candidate_id', $data[0])->first();
+
+                if (!$checkemail && !$checkphone && !$checkcandidate_id) {
+                    $pass=1234;
+                    $token=hash('sha256',time());
+                    $batch[] = [
+                            'candidate_id' => $data[0],	
+                            'name' => $data[1], 
+                            'email' => $data[2],	
+                            'phone' => $data[3],	
+                            'lob_id' => $data[4],	
+                            'designation' => $data[5],	
+                            'department' => $data[6],	
+                            'grade' => $data[7],	
+                            'employment_type' => $data[8],
+                            'actual_date' => $data[9],
+                            'expectance_date' => $data[10],	
+                            'recruiter' => $data[11],
+                            'password'=>Hash::make($pass),
+                            'token'=>$token,
+                            'offer_revoke'=>'',
+                            'status' => 1,
+                    ];
+                    User::insert($batch);
+                    $batch = [];
+                    $count++;
+                }
+            }
+            $i++;
+        }
+
+    
+     return redirect()->back()->with('success',$count.' users    upload successfully');
     }
 
 

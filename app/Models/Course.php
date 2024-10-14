@@ -26,10 +26,13 @@ class Course extends Authenticatable
 
     public function quiz(): HasMany
     {
-        return $this->HasMany(Quiz::class, 'course_id', 'course_id');
+        return $this->HasMany(QuizQuestion::class, 'course_id', 'course_id');
     }
 
-
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
    
 }
 

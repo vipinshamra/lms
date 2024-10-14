@@ -13,7 +13,7 @@ use Yajra\DataTables\DataTables;
 
 class AdminController extends Controller
 {
-   
+  
     public function datatables()
     {
          $datas = Admin::where('role_id',1)->orderBy('id', 'desc')->get();

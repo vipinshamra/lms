@@ -11,7 +11,7 @@ use Yajra\DataTables\DataTables;
 
 class LobController extends Controller
 {
-
+    
     public function datatables()
     {
          $datas = Lob::orderBy('id', 'desc')->get();

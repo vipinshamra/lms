@@ -87,13 +87,24 @@
     <div class="sidebar-menu-wrapper overflow-y-auto scroll-sm">
         <div class="p-20 pt-10">
             <ul class="sidebar-menu">
+                
+                @if ( auth('admin')->user()->role_id ==1 )
                 <li class="sidebar-menu__item {{ Request::is('admin') || Request::is('admin/dashboard') ? 'activePage' : '' }}">
                     <a href="{{ route('dashboard') }}" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-squares-four"></i></span>
-                        <span class="text">Dashboard</span>
+                        <span class="text">Dashboard </span>
                     </a>
                 </li>
-            
+                @endif
+
+                <li class="sidebar-menu__item {{ Request::is('admin/assignment') || Request::is('admin/assignment/*') ? 'activePage' : '' }}">
+                    <a href="{{ route('assignment') }}" class="sidebar-menu__link">
+                        <span class="icon"><i class="ph ph-squares-four"></i></span>
+                        <span class="text">Assignment</span>
+                    </a>
+                </li>
+                @if ( auth('admin')->user()->role_id ==1 )
+               
                 <li class="sidebar-menu__item has-dropdown {{ Request::is('admin/lob') || Request::is('admin/lob/*') ? 'activePage' : '' }}">
                     <a href="javascript:void(0)" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-graduation-cap"></i></span>
@@ -142,6 +153,9 @@
                         <li class="sidebar-submenu__item">
                             <a href="{{ route('user.create') }}" class="sidebar-submenu__link"> Add User</a>
                         </li>
+                        <li class="sidebar-submenu__item">
+                            <a href="{{ route('user.bulkupload') }}" class="sidebar-submenu__link"> Bulk Upload User</a>
+                        </li>
                       
                     </ul>
                     <!-- Submenu End -->
@@ -181,7 +195,7 @@
                     </ul>
                     <!-- Submenu End -->
                 </li>
-
+                @endif
               
                
 

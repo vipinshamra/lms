@@ -8,7 +8,7 @@
         <ul class="flex-align gap-4">
             <li><a href="{{ route('dashboard') }}" class="text-gray-200 fw-normal text-15 hover-text-main-600">Home</a></li>
             <li> <span class="text-gray-500 fw-normal d-flex"><i class="ph ph-caret-right"></i></span> </li>
-            <li><span class="text-main-600 fw-normal text-15">User</span></li>
+            <li><span class="text-main-600 fw-normal text-15">Assignment</span></li>
         </ul>
     </div>
     <!-- Breadcrumb End -->
@@ -20,7 +20,7 @@
         <div class="tab-pane fade show active" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab" tabindex="0">
             <div class="card mt-24">
                 <div class="card-header border-bottom">
-                    <h4 class="mb-4">Change Password</h4>
+                    <h4 class="mb-4">Edit Assignment</h4>
                 </div>
                 <div class="card-body">
                     
@@ -39,21 +39,36 @@
                         </div>
                     @endif
 
-                    <form id="form-create" action="{{ route('user.updatepassword', $user->id)}}" method="post"  class="needs-validation" novalidate>
+                    <form id="form-create" action="{{ route('assignment.update', $data->id)}}" method="post"  class="needs-validation" novalidate>
                         @csrf
                         @method('PUT')
 
                         <div class="row gy-4">
-                            <div class="col-sm-6 col-xs-6">
-                                <label for="new-password" class="form-label mb-8 h6">New Password</label>
-                                    <input type="text"  name="password" required class="form-control py-11  @error('password') is-invalid @enderror" id="new-password" placeholder="Enter New Password">
-                                    @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                            
+
+                            <div class="col-8">
+                                <label for="lob" class="form-label mb-8 h6">Status</label>
+                                <select class="form-control py-11 @error('status') is-invalid @enderror" required name="status">
+                                    
+                                    <option value="">{{ __('Select status') }}</option>
+                                    <option  value="2" {{ $data->assignment_status==2 ?'selected':'' }} >In Review</option>
+                                    <option  value="3" {{ $data->assignment_status==3 ?'selected':'' }} >Reject</option>
+                                    <option  value="1" {{ $data->assignment_status==1 ?'selected':'' }} >Completed</option>
+                                </select>
+
+                                </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                             </div>
-                            <div class="col-sm-6 col-xs-6">
-                                <label for="confirm_password" class="form-label mb-8 h6">Confirm Password</label>
-                                    <input type="text"  name="confirm_password" required class="form-control py-11  @error('confirm_password') is-invalid @enderror" id="confirm_password" placeholder="Enter Confirm Password">
-                                    @error('confirm_password') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+
+                           
+
+                            <div class="col-8">
+                                <label for="email" class="form-label mb-8 h6">Remark</label>
+                                <textarea class="form-control py-11 @error('remark') is-invalid @enderror" required name="remark"  id="remark" placeholder="Enter Remark">{{ $data->assignment_remark }}</textarea>
+                                @error('remark') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+
                             </div>
+             
                            
                             <div class="col-12">
                                 <div class="flex-align justify-content-end gap-8">
@@ -69,9 +84,6 @@
         <!-- My Details Tab End -->
         
     </div>
-
-
-    
 </div>
 
 

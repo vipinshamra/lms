@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Lob;
 use App\Models\Course;
-use App\Models\Quiz;
+use App\Models\QuizQuestion;
 use App\Models\Module;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -234,11 +234,11 @@ class CourseController extends Controller
     public function quiz_datatables($course_id)
     {
          //--- Integrating This Collection Into Datatables
-         $datas = Quiz::where('course_id',$course_id)->orderBy('id', 'asc')->get();
+         $datas = QuizQuestion::where('course_id',$course_id)->orderBy('id', 'asc')->get();
 
          return Datatables::of($datas)
                
-                ->addColumn('action', function(Quiz $data) {
+                ->addColumn('action', function(QuizQuestion $data) {
                     // return '<a href="'.route('course.edit',$data->id).'" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">Edit</a>';
                     return '<button  onclick="editQuiz(' . $data->id . ')" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">Edit</button>';
    
@@ -292,7 +292,7 @@ class CourseController extends Controller
                     'correct_answer' => $data[5],
                 ];
 
-                Quiz::insert($batch);
+                QuizQuestion::insert($batch);
                 $batch = [];
             }
             $i++;
@@ -304,7 +304,7 @@ class CourseController extends Controller
 
     public function editQuiz(Request $request)
     {
-        $quiz = Quiz::find($request->id);
+        $quiz = QuizQuestion::find($request->id);
 
         return response()->json($quiz);
     }
@@ -322,7 +322,7 @@ class CourseController extends Controller
 
         $input = $request->all();
 
-        $quiz = Quiz::find($input['quiz_id']);
+        $quiz = QuizQuestion::find($input['quiz_id']);
 
         $quiz->question = $input['question'];
         $quiz->option_a = $input['option_a'];
@@ -333,7 +333,7 @@ class CourseController extends Controller
         $quiz->update();
 
         // return response()->json(['message' => $input['quiz_id']]);
-        return response()->json(['message' => 'Quiz updated successfully']);
+        return response()->json(['status'=>'success','message' => 'Quiz updated successfully']);
     }
 
 

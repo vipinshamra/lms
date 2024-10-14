@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\SmeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CourseController;
-
+use App\Http\Controllers\Admin\AssignmentController;
 ////Admin
 Route::prefix('admin')->group( function(){
 
@@ -22,7 +22,7 @@ Route::prefix('admin')->group( function(){
 
 });
 
-Route::middleware('admin')->prefix('admin')->group( function(){
+Route::middleware(['admin', 'role:1'])->prefix('admin')->group( function(){
     Route::get("/", [DashboardController::class, 'dashboard'])->name('home');
     Route::get("/dashboard", [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get("/profile", [DashboardController::class, 'profile'])->name('profile');
@@ -67,7 +67,9 @@ Route::middleware('admin')->prefix('admin')->group( function(){
     Route::get('/user/status/update/{id1}/{id2}', [UserController::class, 'updateStatus'])->name('user.status.update');
     Route::get('/user/{id}/changepassword', [UserController::class, 'changepassword'])->name('user.changepassword'); 
     Route::put('/user/{id}/updatepassword', [UserController::class, 'updatepassword'])->name('user.updatepassword'); 
-   
+    Route::get('/user/bulkupload', [UserController::class, 'bulkUpload'])->name('user.bulkupload'); 
+    Route::post('/user/importusercsv', [UserController::class, 'importUserCsv'])->name('user.importusercsv'); 
+     
     Route::get('/course/list', [CourseController::class, 'index'])->name('course');
     Route::get("/course/datatables", [CourseController::class, 'datatables'])->name('course.datatables');
     Route::get('/course/create', [CourseController::class, 'create'])->name('course.create'); 
@@ -88,7 +90,17 @@ Route::middleware('admin')->prefix('admin')->group( function(){
     Route::post('/course/{id}/module', [CourseController::class, 'modulestore'])->name('course.modulestore'); 
     Route::get('/course/edit/module/{id1}/{id2}', [CourseController::class, 'editmodule'])->name('course.editmodule'); 
     Route::post('/course/{id}/updatemodule', [CourseController::class, 'moduleupdate'])->name('course.updatemodule'); 
-    
+
+
 
 });
 
+Route::middleware(['admin', 'role:2'])->prefix('admin')->group( function(){
+   
+    Route::get('/assignment', [AssignmentController::class, 'index'])->name('assignment');
+    Route::get("/assignment/datatables", [AssignmentController::class, 'datatables'])->name('assignment.datatables');
+    Route::get('/assignment/{id}/edit', [AssignmentController::class, 'edit'])->name('assignment.edit'); 
+    Route::put('/assignment/{id}', [AssignmentController::class, 'update'])->name('assignment.update'); 
+    // Route::get('/assignment/status/update/{id1}/{id2}', [LobController::class, 'updateStatus'])->name('lob.status.update');
+
+});

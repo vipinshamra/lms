@@ -8,13 +8,13 @@
         <ul class="flex-align gap-4">
         <li><a href="{{ route('dashboard') }}" class="text-gray-200 fw-normal text-15 hover-text-main-600">Home</a></li>
         <li> <span class="text-gray-500 fw-normal d-flex"><i class="ph ph-caret-right"></i></span> </li>
-        <li><span class="text-main-600 fw-normal text-15">Line of Busines</span></li>
+        <li><span class="text-main-600 fw-normal text-15">Assignment</span></li>
         </ul>
         </div>
 <!-- Breadcrumb End -->
 
         <!-- Breadcrumb Right Start -->
-        <div class="flex-align gap-8 flex-wrap">
+        {{-- <div class="flex-align gap-8 flex-wrap">
             
             <div class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
                 <span class="text-lg"><i class="ph ph-layout"></i></span>
@@ -24,7 +24,7 @@
                     <option value="json">JSON</option>
                 </select>
             </div>
-        </div>
+        </div> --}}
         <!-- Breadcrumb Right End -->
 
     </div>
@@ -36,8 +36,10 @@
             <table id="assignmentTable" class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th class="h6 text-gray-300"  >{{ __('Name') }}</th>
-                        <th class="h6 text-gray-300" width="450">{{ __('Description') }}</th>
+                        <th class="h6 text-gray-300"  >{{ __('User Name') }}</th>
+                        <th class="h6 text-gray-300" >{{ __('Course Name') }}</th>
+                        <th class="h6 text-gray-300" >{{ __('Assignment') }}</th>
+                        <th class="h6 text-gray-300" >{{ __('Remark') }}</th>
                         <th class="h6 text-gray-300" >{{ __('Status') }}</th>
                         <th class="h6 text-gray-300">{{ __('Actions') }}</th>
 
@@ -67,13 +69,15 @@
             lengthChange: false,
             info: false,   // Bottom Left Text => Showing 1 to 10 of 12 entries
             paging: true,
-
-               ajax: '{{ route('lob.datatables') }}',
+         
+               ajax: '{{ route('assignment.datatables') }}',
                columns: [
-                        { data: 'name', name: 'name' },
-                        { data: 'description', name: 'description' },
-                        { data: 'status',  name: 'status'  },
-            			{ data: 'action', searchable: false, orderable: false }
+                { data: 'user_name', name: 'user_name' },
+                { data: 'course_name', name: 'course_name' },
+                { data: 'assignment_file', name: 'assignment_file' },
+                { data: 'assignment_remark', name: 'assignment_remark' },
+                { data: 'assignment_status',  name: 'assignment_status'  },
+                { data: 'action', searchable: false, orderable: false }
                      ],
                 language : {
                  processing: '<img src="{{asset('assets/images/logo/logo.png')}}">'

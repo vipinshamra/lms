@@ -16,8 +16,12 @@ class Coursemap extends Model
 
     public function course(): BelongsTo
     {
-        return $this->belongsTo(Course::class, 'course_id', 'id');
+        return $this->belongsTo(Course::class, 'course_id', 'id')->active(); 
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id'); 
+    }
 
 }

@@ -19,13 +19,19 @@ Route::middleware('auth')->group( function(){
     Route::get("/course/details/{id1}/{slug}/{id2}", [UserController::class, 'course'])->name('user.course.module');
  
     Route::get("/course/assignments/download/{id}", [UserController::class, 'assignments_download'])->name('user.assignments.download');
-    Route::get("/course/assignments", [UserController::class, 'assignments'])->name('user.assignments');
-    Route::post("/course/assignments/upload", [UserController::class, 'assignments_upload'])->name('user.assignments.upload');
+    Route::get("/course/assignments/{id}", [UserController::class, 'assignments'])->name('user.assignments');
+    Route::post("/course/assignments/upload/{id}", [UserController::class, 'assignments_upload'])->name('user.assignments.upload');
   
-    Route::get("/course/getquestion/{id}", [UserController::class, 'getquestion'])->name('user.quiz.getquestion');
-    Route::get("/course/quiz/{id}", [UserController::class, 'quiz_start'])->name('user.quiz.start');
-    Route::get("/course/quiz/result", [UserController::class, 'quiz_result'])->name('user.quiz.result');
-   
+    
+
+Route::get('course/quiz/{courseId}', [UserController::class, 'showQuiz'])->name('quiz.index');
+Route::get('course/quiz/{courseId}/{questionindex}', [UserController::class, 'showQuestion'])->name('quiz.question');
+Route::post('quiz/{courseId}/{questionId}', [UserController::class, 'storeAnswer'])->name('quiz.answer');
+Route::get('quiz/result/{courseId}', [UserController::class, 'showResult'])->name('quiz.result');
+Route::get('quiz/{courseId}/retake', [UserController::class, 'retakeQuiz'])->name('quiz.retake');
+
+Route::post('/pdf-status/{id1}/{id2}', [UserController::class, 'updatePdfReadStatus'])->name('pdf.status');
+Route::post('/video-status/{id1}/{id2}', [UserController::class, 'updateVideoReadStatus'])->name('video.status');
 
 });
 

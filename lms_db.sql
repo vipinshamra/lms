@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 07, 2024 at 09:01 PM
+-- Generation Time: Oct 14, 2024 at 09:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,9 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `name`, `email`, `phone`, `password`, `role_id`, `lob_id`, `status`, `token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@gmail.com', '8000000006', '$2y$12$G1n3scAJ9xHv6aAy7ZPsrO3MhpFiYy8p0GDRMzp6qyK89KxyoJUL.', 1, 0, 1, '', '2024-08-17 12:37:52', '2024-10-07 09:15:20');
+(1, 'admin', 'admin@gmail.com', '8000000006', '$2y$12$G1n3scAJ9xHv6aAy7ZPsrO3MhpFiYy8p0GDRMzp6qyK89KxyoJUL.', 1, 0, 1, '', '2024-08-17 12:37:52', '2024-10-07 09:15:20'),
+(8, 'Alyssa Burks', 'suhuzol@gmail.com', '8700000000', '$2y$12$qM/XL6yCqrKOMLEWnP6jruXzz9vErq9PQ2Oimr8Eua0a24cgqPAjy', 2, 1, 1, 'b871ff290ba19a8ed7c3e4f465b35fcdfc66564bdabfd8a19da3318fff26ebea', '2024-10-10 10:46:40', '2024-10-13 14:44:24'),
+(9, 'Porter Dean', 'pidywiwyp@mailinator.com', '8500000000', '$2y$12$o5VgwR/TekGuft5sTEPzyu3EoksWj2ZIdPLQL/90AcxDsGkRj13bG', 2, 2, 1, '0f6df73ab90dee38b0ff1097aa76198c6442aeaca2cdccd77b34019c1903517e', '2024-10-10 10:47:31', '2024-10-10 10:47:31');
 
 -- --------------------------------------------------------
 
@@ -75,6 +77,36 @@ CREATE TABLE `cache_locks` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `coursemaps`
+--
+
+CREATE TABLE `coursemaps` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `lob_id` int(11) NOT NULL,
+  `quiz_status` int(11) NOT NULL DEFAULT 0,
+  `assignment_status` int(11) NOT NULL DEFAULT 0,
+  `assignment_file` varchar(255) NOT NULL,
+  `assignment_remark` text NOT NULL,
+  `assignment_download_status` int(11) NOT NULL DEFAULT 0,
+  `is_read_video` text NOT NULL,
+  `is_read_docs` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `coursemaps`
+--
+
+INSERT INTO `coursemaps` (`id`, `user_id`, `course_id`, `lob_id`, `quiz_status`, `assignment_status`, `assignment_file`, `assignment_remark`, `assignment_download_status`, `is_read_video`, `is_read_docs`, `created_at`, `updated_at`) VALUES
+(6, 2, 1, 1, 2, 3, '1728849065.pdf', 'dasbjdhbs scasdfdsf', 1, '3', '1,2', '2024-10-13 08:50:01', '2024-10-14 14:01:29'),
+(7, 2, 2, 1, 0, 0, '', '', 0, '', '5', '2024-10-13 08:50:01', '2024-10-14 14:20:16');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `courses`
 --
 
@@ -91,6 +123,14 @@ CREATE TABLE `courses` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `courses`
+--
+
+INSERT INTO `courses` (`id`, `course_id`, `course_name`, `description`, `image`, `assignment`, `sme_id`, `lob_id`, `status`, `updated_at`, `created_at`) VALUES
+(1, 9396, 'Mercedes Hogan', 'Debitis possimus in', '1728577424.jpg', '1728577424.pdf', '8,9', '1,2', 1, '2024-10-13 08:36:21', '2024-10-10 10:53:44'),
+(2, 9107, 'Nasim Hanson', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,', '1728578493.jpg', '1728578911.pdf', '8,9', '1,2', 1, '2024-10-13 09:00:11', '2024-10-10 11:11:33');
 
 -- --------------------------------------------------------
 
@@ -219,7 +259,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (11, '0001_01_01_000002_create_jobs_table', 1),
 (12, '2024_08_16_061428_create_admins_table', 1),
 (13, '2024_10_06_123138_create_quizes_table', 2),
-(14, '2024_10_06_152505_create_modules_table', 3);
+(14, '2024_10_06_152505_create_modules_table', 3),
+(15, '2024_10_10_171202_create_coursemap_table', 4),
+(16, '2024_10_13_161041_create_user_quiz_answer_table', 5);
 
 -- --------------------------------------------------------
 
@@ -240,6 +282,18 @@ CREATE TABLE `modules` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `modules`
+--
+
+INSERT INTO `modules` (`id`, `course_id`, `module_name`, `description`, `duration`, `video`, `document`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Concept Of Wealth Management', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?”', 10, '1728577674.mp4', '1728577674.pdf', 1, '2024-10-10 10:57:54', '2024-10-10 10:57:54'),
+(2, 1, 'Concept Of Wealth Management 1', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?”', 20, '1728577707.mp4', '1728577707.pdf', 1, '2024-10-10 10:58:27', '2024-10-10 10:58:27'),
+(3, 1, 'Concept Of Wealth Management 2', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?”', 12, '1728577742.mp4', '1728577742.pdf', 1, '2024-10-10 10:59:02', '2024-10-10 10:59:02'),
+(4, 2, 'This is for test lesson', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,', 12, '1728578992.mp4', '', 1, '2024-10-10 11:19:52', '2024-10-10 11:19:52'),
+(5, 2, 'Sed ut perspiciatis', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,', 28, '', '1728579013.pdf', 1, '2024-10-10 11:20:13', '2024-10-10 11:20:13'),
+(6, 2, 'unde omnis iste natus error', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,', 13, '1728579049.mp4', '1728579049.pdf', 1, '2024-10-10 11:20:49', '2024-10-10 11:20:49');
+
 -- --------------------------------------------------------
 
 --
@@ -255,10 +309,10 @@ CREATE TABLE `password_reset_tokens` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quizzes`
+-- Table structure for table `quiz_questions`
 --
 
-CREATE TABLE `quizzes` (
+CREATE TABLE `quiz_questions` (
   `id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
   `question` text NOT NULL,
@@ -273,12 +327,24 @@ CREATE TABLE `quizzes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `quizzes`
+-- Dumping data for table `quiz_questions`
 --
 
-INSERT INTO `quizzes` (`id`, `course_id`, `question`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_answer`, `status`, `updated_at`, `created_at`) VALUES
+INSERT INTO `quiz_questions` (`id`, `course_id`, `question`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_answer`, `status`, `updated_at`, `created_at`) VALUES
 (1, 3, 'What is the capital of india', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-06 09:37:39', '2024-10-06 13:23:19'),
-(2, 3, 'What is the capital of india', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'B', 1, '2024-10-06 09:38:01', '2024-10-06 13:23:19');
+(2, 3, 'What is the capital of india', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'B', 1, '2024-10-06 09:38:01', '2024-10-06 13:23:19'),
+(3, 1, 'What is the capital of india 1', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:25:44', '2024-10-10 16:25:44'),
+(4, 1, 'What is the capital of india 2', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:25:44', '2024-10-10 16:25:44'),
+(5, 1, 'What is the capital of india 3', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:25:44', '2024-10-10 16:25:44'),
+(6, 1, 'What is the capital of india 4', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:25:44', '2024-10-10 16:25:44'),
+(7, 1, 'What is the capital of india 5', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:25:44', '2024-10-10 16:25:44'),
+(8, 1, 'What is the capital of india 6', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:25:44', '2024-10-10 16:25:44'),
+(9, 2, 'What is the capital of india 1', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:49:07', '2024-10-10 16:49:07'),
+(10, 2, 'What is the capital of india 2', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:49:07', '2024-10-10 16:49:07'),
+(11, 2, 'What is the capital of india 3', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:49:07', '2024-10-10 16:49:07'),
+(12, 2, 'What is the capital of india 4', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:49:07', '2024-10-10 16:49:07'),
+(13, 2, 'What is the capital of india 5', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'A', 1, '2024-10-10 16:49:07', '2024-10-10 16:49:07'),
+(14, 2, 'What is the capital of india 6', 'Karnal', 'Karnal', 'Chandigarh', 'Dubai', 'B', 1, '2024-10-13 09:07:11', '2024-10-10 16:49:07');
 
 -- --------------------------------------------------------
 
@@ -300,7 +366,62 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('2K9o4RLqOMeqhQxRh6sHOUZjAOyvAz3q1OF9VApb', NULL, '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiOHg3UUQ0emw4eERSWUU3d2xValQ3cENyeEtnYTNFYVpRS0hlVEoycCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbGFyYXZlbC9sbXMvcHVibGljL2xvZ2luIjt9fQ==', 1728326585);
+('aazwoOdhJUu5eNBCodPKovzsPrdFx8QPFpPevSiR', 2, '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQkRGZ3pNY3BjbFRhV3JlTkN6YWVNOUZqTlVHaWoyOVNSWkU1V2NJWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NjM6Imh0dHA6Ly9sb2NhbGhvc3QvbGFyYXZlbC9sbXMvcHVibGljL2NvdXJzZS9kZXRhaWxzLzIvZG9jdW1lbnQvNSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7fQ==', 1728935434);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `candidate_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` bigint(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `lob_id` int(11) DEFAULT NULL,
+  `designation` varchar(255) DEFAULT NULL,
+  `department` varchar(250) NOT NULL,
+  `grade` varchar(255) DEFAULT NULL,
+  `employment_type` varchar(255) DEFAULT NULL,
+  `actual_date` date DEFAULT NULL,
+  `expectance_date` date DEFAULT NULL,
+  `recruiter` varchar(200) NOT NULL,
+  `offer_revoke` varchar(200) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1 COMMENT '0=pending, 1 active, 2 suspended',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `candidate_id`, `name`, `email`, `phone`, `password`, `lob_id`, `designation`, `department`, `grade`, `employment_type`, `actual_date`, `expectance_date`, `recruiter`, `offer_revoke`, `token`, `status`, `created_at`, `updated_at`) VALUES
+(2, 768454, 'user', 'user@gmail.com', 8765798316, '$2y$12$B3nmCvdhK2b6PuMj7YDhUOu1a6cM7hcf10kHmGAElvzb/p7zST6Se', 1, 'IT', 'IT', 'A', 'Soft', '2024-10-10', '2024-10-02', 'test', '', '19ac93c7bc74f1c5e19e203c05339e4ebf92dfae41039543a715baa8278ec786', 1, '2024-10-09 12:34:44', '2024-10-09 12:34:44'),
+(18, 142323, 'Nita Barrera1', 'fazusa1@mailinator.com', 2222222423, '$2y$12$jGKrT8Azx8aqGlsbKsw9COtWQwb/se.ol5QlM7lIl0a9.bM.ea5z2', 1, 'Laboriosam dolores', 'Sint id laborum Atq', 'Iure exercitation vi', 'Enim qui natus Nam e', '1977-02-17', '1989-05-14', 'Doloremque velit iru', '', 'c83446e5451c1e25877857ba7abd5ea4e37183939ee5b15f18dc8011e4348c36', 1, NULL, NULL),
+(19, 748454, 'user11', 'user11@gmail.com', 8765798323, '$2y$12$8A4bKC4VYmiexrlL1lwoZumpbrfD..3AHllkbSCBmkfTvD.3La5.i', 1, 'IT', 'IT', 'A', 'Soft', '2024-10-10', '2024-10-02', 'test', '', 'd57c1cbd7af1f0edece5402eddce76673141261fd675894c1129766a7a8da33e', 1, NULL, NULL),
+(20, 112115, 'vipin1', 'lacyreh1@mailinator.com', 8765798234, '$2y$12$NdTEed4MZtRayQKXKL3DQuA1EcZEBMC/DzBa7Fy04ES/kiKv6ZMfC', 1, 'Excepteur corporis e', 'Culpa asperiores nes', 'Quis iste debitis ip', 'Atque possimus omni', '2010-04-09', '2020-10-30', 'Occaecat molestiae v', '', 'd57c1cbd7af1f0edece5402eddce76673141261fd675894c1129766a7a8da33e', 1, NULL, NULL),
+(21, 763454, 'vipin112', 'nugyqapo1@mailinator.com', 9465798123, '$2y$12$R4jQL3Iv3eFp1ZIcZigyBO2KQatYAIXdTDTJJK7dSwMfARo9rl7Py', 2, 'Quia totam sunt ut e', 'Beatae tempore pers', 'Ea qui provident an', 'Ratione rem voluptat', '2020-12-06', '2002-03-22', 'Consequatur non id', '', '5577a303bac670324cbf727abde0e0fe303b0bb26f2cfda4290bd8a925b003ce', 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_quiz_answers`
+--
+
+CREATE TABLE `user_quiz_answers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL,
+  `answer` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
@@ -324,6 +445,12 @@ ALTER TABLE `cache`
 --
 ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`);
+
+--
+-- Indexes for table `coursemaps`
+--
+ALTER TABLE `coursemaps`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `courses`
@@ -377,9 +504,9 @@ ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
--- Indexes for table `quizzes`
+-- Indexes for table `quiz_questions`
 --
-ALTER TABLE `quizzes`
+ALTER TABLE `quiz_questions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -391,6 +518,19 @@ ALTER TABLE `sessions`
   ADD KEY `sessions_last_activity_index` (`last_activity`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Indexes for table `user_quiz_answers`
+--
+ALTER TABLE `user_quiz_answers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -398,13 +538,19 @@ ALTER TABLE `sessions`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `coursemaps`
+--
+ALTER TABLE `coursemaps`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -428,19 +574,31 @@ ALTER TABLE `lobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `modules`
 --
 ALTER TABLE `modules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `quizzes`
+-- AUTO_INCREMENT for table `quiz_questions`
 --
-ALTER TABLE `quizzes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `quiz_questions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `user_quiz_answers`
+--
+ALTER TABLE `user_quiz_answers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

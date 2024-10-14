@@ -29,29 +29,42 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
-    <form id="form-create" action="{{ route('user.assignments.upload')}}" method="post"  class="needs-validation" novalidate enctype="multipart/form-data">
+    @if ($details->assignment_status==2)
+    In Review
+   
+    @else
+    
+    <form action="{{ route('user.assignments.upload',$details->course->id)}}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
         @csrf
-            <div class="row gy-20">
-            
-                <div class="col-xxl-9 col-md-8 col-sm-7">
-                    <div class="row g-20">
-                        <div class="col-sm-12">
-                            <label for="courseTitle" class="h5 mb-8 fw-semibold font-heading">Assinments <span class="text-13 text-gray-400 fw-medium">(Required)</span> </label>
-                            <div class="position-relative">
-                                <input type="file" name="assignment" class=" form-control py-11 pe-76 @error('assignment') is-invalid @enderror" >
-                                @error('assignment') <div class="invalid-feedback">{{ $message }}</div> @enderror  
-                            </div>
+    
+        <div class="row gy-20">
+         
+            <div class="col-xxl-9 col-md-8 col-sm-7">
+                <div class="row g-20">
+                    <div class="col-sm-12">
+                        <label for="courseTitle" class="h5 mb-8 fw-semibold font-heading">Assinments <span class="text-13 text-gray-400 fw-medium">(Required)</span> </label>
+                        <div class="position-relative">
+                            <input type="file" name="file" class=" form-control py-11 pe-76 @error('file') is-invalid @enderror" >
+                            @error('file') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                         </div>
-                     
                     </div>
+                 
                 </div>
-                <div class="flex-align justify-content-end gap-8">
-                    <button type="reset" class="btn btn-outline-main bg-main-100 border-main-100 text-main-600 rounded-pill py-9">Cancel</button>
-                    <button type="submit" class="btn btn-main rounded-pill py-9">Save Changes</button>
-                 </div>
             </div>
-        </form>
+            <div class="flex-align justify-content-end gap-8">
+                <button type="reset" class="btn btn-outline-main bg-main-100 border-main-100 text-main-600 rounded-pill py-9">Cancel</button>
+                <button type="submit" class="btn btn-main rounded-pill py-9">Save Changes</button>
+             </div>
+        </div>
+@if ( $details->assignment_remark !='')
+    <h5>Remark</h5>
+<p>{{ $details->assignment_remark }}</p>
+
+@endif
+    </form>
+   
+    @endif 
+
 
     </div>
 </div>
