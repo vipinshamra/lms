@@ -39,9 +39,11 @@
                         <th class="h6 text-gray-300"  >{{ __('User Name') }}</th>
                         <th class="h6 text-gray-300" >{{ __('Course Name') }}</th>
                         <th class="h6 text-gray-300" >{{ __('Assignment') }}</th>
-                        <th class="h6 text-gray-300" >{{ __('Remark') }}</th>
-                        <th class="h6 text-gray-300" >{{ __('Status') }}</th>
-                        <th class="h6 text-gray-300">{{ __('Actions') }}</th>
+                        <th class="h6 text-gray-300" >{{ __('LOB') }}</th>
+                        <th class="h6 text-gray-300" >{{ __('Select SME') }}</th>
+                        <th class="h6 text-gray-300" >{{ __('Assigned') }}</th>
+                        <th class="h6 text-gray-300"  style="width: 111px;" >{{ __('Status') }}</th>
+                        <th class="h6 text-gray-300" style="width: 108px;">{{ __('Actions') }}</th>
 
                     </tr>
                 </thead>
@@ -54,14 +56,13 @@
     
 </div>
 
-
-
 @section('scripts')
 
-
 <script type="text/javascript">
-   
-   var table = $('#assignmentTable').DataTable({
+
+$(document).ready(function() {
+ 
+    var table = $('#assignmentTable').DataTable({
             ordering: false,
             processing: true,
             serverSide: true,
@@ -75,7 +76,9 @@
                 { data: 'user_name', name: 'user_name' },
                 { data: 'course_name', name: 'course_name' },
                 { data: 'assignment_file', name: 'assignment_file' },
-                { data: 'assignment_remark', name: 'assignment_remark' },
+                { data: 'lob_id', name: 'lob_id' },
+                { data: 'assign_sme', name: 'assign_sme' },
+                { data: 'assignment_assign', name: 'assignment_assign' },
                 { data: 'assignment_status',  name: 'assignment_status'  },
                 { data: 'action', searchable: false, orderable: false }
                      ],
@@ -87,8 +90,38 @@
                 },
 
 
-            });	
-				
+        });	
+
+
+    // Handle the status change event
+    $(document).on('change', '.sme-select', function() {
+        var courseId = $(this).data('id'); // Get user ID
+        var smeId = $(this).val();      // Get selected status value
+        
+        $.ajax({
+            url: "{{ route('assignment.sme.update') }}",  // Route to handle AJAX update
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",  // Include CSRF token
+                id: courseId,
+                sme_id: smeId
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Status updated successfully!');
+                    table.ajax.reload(null, false);  // Reload DataTable
+                } else {
+                    alert('Error updating status');
+                }
+            },
+            error: function() {
+                alert('Error occurred while updating status');
+            }
+        });
+    });
+    
+});
+
 </script>
 
 {{-- DATA TABLE --}}

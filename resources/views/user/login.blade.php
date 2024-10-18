@@ -7,7 +7,7 @@
         <img src="{{ asset('assets/images/logo/logo.png') }}" alt="">
     </a>
     <h2 class="mb-8">Sign-In to your account </h2>
-    <p class="text-gray-600 text-15 mb-32">Welcome back, please sign in below</p>
+    <p class="text-gray-600 text-15 mb-32">Welcome to LearnBridge!</p>
 
     @if ($errors->any())
         @foreach ($errors->all() as $error)

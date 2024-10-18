@@ -36,21 +36,21 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{ $question->question }}</h5>
-                          
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="answer" value="A" >
+
+                            <div class="form-check">
+                                    <input class="form-check-input" {{ $selectedAns=='A'?'checked':''}} type="radio" name="answer" value="A" >
                                     <label class="form-check-label" for="answer">{{ $question->option_a }}</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="answer" value="B" >
+                                    <input class="form-check-input" {{ $selectedAns=='B'?'checked':''}} type="radio" name="answer" value="B" >
                                     <label class="form-check-label" for="answer">{{ $question->option_b }}</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="answer" value="C" >
+                                    <input class="form-check-input" {{ $selectedAns=='C'?'checked':''}} type="radio" name="answer" value="C" >
                                     <label class="form-check-label" for="answer">{{ $question->option_c }}</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="answer" value="D" >
+                                    <input class="form-check-input" {{ $selectedAns=='D'?'checked':''}} type="radio" name="answer" value="D" >
                                     <label class="form-check-label" for="answer">{{ $question->option_d }}</label>
                                 </div>
                         </div>
@@ -60,26 +60,26 @@
 
                 </div>
                 <div class="text-center mt-4">
-                    {{ $questionindex }}
-            @if ($questionindex >0)
-            <a href="{{ route('quiz.question',[$details->course->id, ($questionindex-1)]) }}" class="btn btn-secondary rounded-pill py-9">
-                Previous
-               </a>
-            @else
-            <button id="prevBtn" class="btn btn-secondary rounded-pill py-9" disabled>Previous</button>
 
-            @endif
-                 
-            @if ($questionCount == ($questionindex+1))
-            <input type="hidden" value="0" name="questionindex">
+                    @if ($questionindex >0)
+                    <a href="{{ route('quiz.question',[$details->course->id, ($questionindex-1)]) }}" class="btn btn-secondary rounded-pill py-9">
+                        Previous
+                    </a>
+                    @else
+                    <button id="prevBtn" class="btn btn-secondary rounded-pill py-9" disabled>Previous</button>
 
-            <button type="submit" class="btn btn-primary rounded-pill py-9">Submit</button>
-            @else
-            <input type="hidden" value="{{ $questionindex+1 }}" name="questionindex">
+                    @endif
+                        
+                    @if ($questionCount == ($questionindex+1))
+                    <input type="hidden" value="0" name="questionindex">
 
-            <button type="submit" class="btn btn-primary rounded-pill py-9">Next</button>
+                    <button type="submit" class="btn btn-primary rounded-pill py-9">Submit</button>
+                    @else
+                    <input type="hidden" value="{{ $questionindex+1 }}" name="questionindex">
 
-            @endif
+                    <button type="submit" class="btn btn-primary rounded-pill py-9">Next</button>
+
+                    @endif
 
                
                 </div>

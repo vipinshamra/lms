@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\AssignmentController;
+use App\Http\Controllers\Admin\TaController;
 ////Admin
 Route::prefix('admin')->group( function(){
 
@@ -91,7 +92,16 @@ Route::middleware(['admin', 'role:1'])->prefix('admin')->group( function(){
     Route::get('/course/edit/module/{id1}/{id2}', [CourseController::class, 'editmodule'])->name('course.editmodule'); 
     Route::post('/course/{id}/updatemodule', [CourseController::class, 'moduleupdate'])->name('course.updatemodule'); 
 
-
+    Route::get('/ta', [TaController::class, 'index'])->name('ta');
+    Route::get("/ta/datatables", [TaController::class, 'datatables'])->name('ta.datatables');
+    Route::get('/ta/create', [TaController::class, 'create'])->name('ta.create'); 
+    Route::post('/ta', [TaController::class, 'store'])->name('ta.store'); 
+    Route::get('/ta/{id}/edit', [TaController::class, 'edit'])->name('ta.edit'); 
+    Route::put('/ta/{id}', [TaController::class, 'update'])->name('ta.update'); 
+    Route::get('/ta/status/update/{id1}/{id2}', [TaController::class, 'updateStatus'])->name('ta.status.update');
+    Route::get('/ta/{id}/changepassword', [TaController::class, 'changepassword'])->name('ta.changepassword'); 
+    Route::put('/ta/{id}/updatepassword', [TaController::class, 'updatepassword'])->name('ta.updatepassword'); 
+   
 
 });
 
@@ -101,6 +111,6 @@ Route::middleware(['admin', 'role:2'])->prefix('admin')->group( function(){
     Route::get("/assignment/datatables", [AssignmentController::class, 'datatables'])->name('assignment.datatables');
     Route::get('/assignment/{id}/edit', [AssignmentController::class, 'edit'])->name('assignment.edit'); 
     Route::put('/assignment/{id}', [AssignmentController::class, 'update'])->name('assignment.update'); 
-    // Route::get('/assignment/status/update/{id1}/{id2}', [LobController::class, 'updateStatus'])->name('lob.status.update');
+    Route::post('/assignment/sme/update/', [AssignmentController::class, 'smeUpdate'])->name('assignment.sme.update');
 
 });

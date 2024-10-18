@@ -146,7 +146,10 @@ class UserController extends Controller
                 $questionCount  = QuizQuestion::where('course_id', $course_id)->count();
                 $question = QuizQuestion::where('course_id', $course_id)->orderBy('created_at', 'asc')->first();
 
-                return view("user.quiz.index",compact('questionCount','questionindex','details','question'));
+                UserQuizAnswer::where('user_id', auth()->id())->where('course_id', $course_id)->delete();
+                $selectedAns= '';
+
+                return view("user.quiz.index",compact('selectedAns','questionCount','questionindex','details','question'));
             }else {
                 return redirect()->back()->with('error', 'not found');
             } 
@@ -161,6 +164,7 @@ class UserController extends Controller
             $questionCount  = QuizQuestion::where('course_id', $courseId)->count();
           
             $questions = QuizQuestion::where('course_id', $courseId)->orderBy('created_at', 'asc')->get();
+            
 
             if ($questionindex >= 0 && $questionindex < $questions->count()) {
                 $question = $questions[$questionindex];
@@ -168,8 +172,14 @@ class UserController extends Controller
             } else{
                 return redirect()->back()->with('error', 'not found');
             }
-          
-            return view('user.quiz.index', compact('questionCount','questionindex','details', 'question'));
+            $userAnswers = UserQuizAnswer::where('user_id', auth()->id())->where('question_id', $question->id)->where('course_id', $courseId)->with('questions')->first();
+            if($userAnswers){
+                $selectedAns= $userAnswers->answer;
+            }else{
+                $selectedAns= '';
+            }
+
+            return view('user.quiz.index', compact('selectedAns','questionCount','questionindex','details', 'question'));
         }else {
             return redirect()->back()->with('error', 'not found');
         } 
@@ -178,7 +188,7 @@ class UserController extends Controller
     public function storeAnswer(Request $request, $courseId, $questionId)
     {
         $request->validate([
-            'answer' => 'required|string',
+            'answer' => 'string',
         ]);
 
         UserQuizAnswer::updateOrCreate(
@@ -194,6 +204,27 @@ class UserController extends Controller
             return redirect()->route('quiz.question', [$courseId, $questionindex]);
         } else {
 
+            $user_id=  Auth::guard('web')->user()->id;
+            $coursedetails = Coursemap::where('user_id', $user_id)->where('course_id', $courseId)->with('course')->first();
+            $questions = QuizQuestion::where('course_id', $courseId)->get();
+            $userAnswers = UserQuizAnswer::where('user_id', auth()->id())->where('course_id', $courseId)->with('questions')->get();
+            $score = 0;
+            foreach ($userAnswers as $userAnswer) {
+                if ($userAnswer->answer == $userAnswer->questions->correct_answer) {
+                    $score++;
+                }
+            }
+            $scorePercentage=($score *100) / $questions->count();
+            
+            if($scorePercentage >= 80){
+                $coursedetails->quiz_score = $score;
+                $coursedetails->quiz_status = 1;
+                $coursedetails->update();
+            }else{
+                $coursedetails->quiz_score = $score;
+                $coursedetails->quiz_status = 2;
+                $coursedetails->update();
+            }
             return redirect()->route('quiz.result', $courseId);
         }
     }
@@ -206,22 +237,9 @@ class UserController extends Controller
         if($coursedetails){
             $questions = QuizQuestion::where('course_id', $courseId)->get();
             $userAnswers = UserQuizAnswer::where('user_id', auth()->id())->where('course_id', $courseId)->with('questions')->get();
-            $score = 0;
-            foreach ($userAnswers as $userAnswer) {
-                if ($userAnswer->answer == $userAnswer->questions->correct_answer) {
-                    $score++;
-                }
-            }
-            $scorePercentage=($score *100) / $questions->count();
-            if($scorePercentage >= 80){
-                $coursedetails->quiz_status = 1;
-                $coursedetails->update();
-            }else{
-                $coursedetails->quiz_status = 2;
-                $coursedetails->update();
-            }
+           
 
-            return view('user.quiz.result', compact('questions','coursedetails', 'score'));
+            return view('user.quiz.result', compact('userAnswers','questions','coursedetails'));
         }else {
             return redirect()->back()->with('error', 'not found');
         } 

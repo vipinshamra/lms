@@ -89,6 +89,7 @@ class CourseController extends Controller
          $request->validate([
             'course_name' => 'required',
             'description' => 'required',
+            'author' => 'required',
             'sme_id' => 'required|array',
             'lob_id' => 'required|array',
             'image' => 'required|file|mimes:png,gpeg,jpg|max:2048',
@@ -100,6 +101,7 @@ class CourseController extends Controller
             'sme_id.required' => 'Please select your SME.',
         ]);
 
+        
 
         // Upload the file
         $file = $request->file('image');
@@ -116,6 +118,8 @@ class CourseController extends Controller
         
         $course = new Course();
 
+        $course->author = $request->author;
+        $course->uploader = Auth::guard("admin")->user()->id;
         $course->course_name = $request->course_name;
         $course->description = $request->description;
         $course->sme_id = implode(",",$request->sme_id);
@@ -166,6 +170,7 @@ class CourseController extends Controller
          $request->validate([
             'course_name' => 'required',
             'description' => 'required',
+            'author' => 'required',
             'sme_id' => 'required|array',
             'lob_id' => 'required|array',
             'image' => 'file|mimes:png,gpeg,jpg|max:2048',
@@ -204,6 +209,9 @@ class CourseController extends Controller
              $course->assignment =$assignmentName;
         }
      
+
+        $course->author = $request->author;
+        $course->uploader = Auth::guard("admin")->user()->id;
         $course->course_name = $request->course_name;
         $course->description = $request->description;
         $course->sme_id = implode(",",$request->sme_id);
@@ -285,7 +293,7 @@ class CourseController extends Controller
                 $batch[] = [
                     'course_id' => $course_id,
                     'question' => $data[0],
-                    'option_a' => $data[2],
+                    'option_a' => $data[1],
                     'option_b' => $data[2],
                     'option_c' => $data[3],
                     'option_d' => $data[4],

@@ -39,7 +39,7 @@
                         </div>
                     @endif
 
-                    <form id="form-create" action="{{ route('assignment.update', $data->id)}}" method="post"  class="needs-validation" novalidate>
+                    <form id="form-create" action="{{ route('assignment.update', $data->id)}}" method="post"  class="needs-validation"  enctype="multipart/form-data" novalidate>
                         @csrf
                         @method('PUT')
 
@@ -52,15 +52,26 @@
                                     
                                     <option value="">{{ __('Select status') }}</option>
                                     <option  value="2" {{ $data->assignment_status==2 ?'selected':'' }} >In Review</option>
-                                    <option  value="3" {{ $data->assignment_status==3 ?'selected':'' }} >Reject</option>
-                                    <option  value="1" {{ $data->assignment_status==1 ?'selected':'' }} >Completed</option>
+                                    <option  value="3" {{ $data->assignment_status==3 ?'selected':'' }} >Rework</option>
+                                    <option  value="1" {{ $data->assignment_status==1 ?'selected':'' }} >Complete</option>
                                 </select>
 
                                 </select>
                                 @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                             </div>
 
-                           
+                            <div class="col-8">
+                                <label for="smefile" class="form-label mb-8 h6">Feed Back File </label>
+                                <input type="file" class="form-control py-11 @error('smefile') is-invalid @enderror" name="smefile" id="smefile">
+                                @error('smefile') <div class="invalid-feedback">{{ $message }}</div> @enderror 
+                                <div id="emailHelp" class="form-text">Upload only zip, excel, word and pdf.</div>
+                                @if($data->assignment_sme_file)
+                                    <div class="flex-align gap-8 mt-1">
+                                        <a href="{{ asset('uploads/assignment/'.$data->assignment_sme_file) }}" class="py-9 w-100 "><i class="ph ph-download"></i> Preview </a>
+                                    </div>
+                                @endif
+                            </div>
+
 
                             <div class="col-8">
                                 <label for="email" class="form-label mb-8 h6">Remark</label>

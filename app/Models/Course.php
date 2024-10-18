@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Course extends Authenticatable
 {
@@ -33,6 +34,7 @@ class Course extends Authenticatable
     {
         return $query->where('status', 1);
     }
+
    
 }
 

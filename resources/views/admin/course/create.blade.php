@@ -119,6 +119,13 @@
                                 @error('lob_id') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                             </div>
 
+
+                            <div class="col-sm-12">
+                                <label for="author" class="form-label mb-8 h6">Author <span class="text-13 text-gray-400 fw-medium">(Required)</span> </label>
+                                <input type="text"  class="form-control py-11 @error('author') is-invalid @enderror"  name="author" id="author" placeholder="Enter Author">
+                                @error('author') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                            </div>
+
                             <div class="col-sm-12">
                                 <label for="assignment" class="form-label mb-8 h6">Assignment File </label>
                                 <input type="file" class="form-control py-11 @error('assignment') is-invalid @enderror" name="assignment" id="assignment">

@@ -11,7 +11,7 @@ class Coursemap extends Model
     use HasFactory;
    
     protected $fillable = [
-        'user_id', 'course_id', 'lob_id', 'quiz_status', 'assignment_status', 'assignment_file', 'assignment_remark', 'assignment_download_status', 'created_at', 'updated_at'	
+        'user_id', 'course_id', 'lob_id', 'quiz_status', 'quiz_status', 'assignment_status', 'assignment_file', 'assignment_remark', 'assignment_download_status', 'assignment_sme_file', 'is_read_video', 'is_read_docs', 'created_at', 'updated_at'	
     ];
 
     public function course(): BelongsTo
@@ -24,4 +24,13 @@ class Coursemap extends Model
         return $this->belongsTo(User::class, 'user_id', 'id'); 
     }
 
+    public function lob(): BelongsTo
+    {
+        return $this->belongsTo(Lob::class, 'lob_id', 'id'); 
+    }
+   
+    public function sme(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'assignment_assign', 'id'); 
+    }
 }

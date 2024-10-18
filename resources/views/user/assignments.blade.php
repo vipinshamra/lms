@@ -29,11 +29,28 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    @if ($details->assignment_status==2)
-    In Review
-   
-    @else
-    
+
+        <div class="flex-align gap-8 mt-1">
+        @if ($details->assignment_status==2)
+        <p class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
+            In Review 
+        </p>
+        @elseif ($details->assignment_status==1)
+        <p class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
+            Complete
+        </p>
+        @elseif ($details->assignment_status==3)
+        <p class="text-13 py-2 px-8 bg-danger-50 text-danger-600 d-inline-flex align-items-center gap-8 rounded-pill">
+            Rework 
+        </p>
+        @else
+     
+        @endif 
+        
+        </div>
+
+
+    @if ($details->assignment_status!=1)    
     <form action="{{ route('user.assignments.upload',$details->course->id)}}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
         @csrf
     
@@ -56,14 +73,26 @@
                 <button type="submit" class="btn btn-main rounded-pill py-9">Save Changes</button>
              </div>
         </div>
-@if ( $details->assignment_remark !='')
-    <h5>Remark</h5>
-<p>{{ $details->assignment_remark }}</p>
 
-@endif
     </form>
    
     @endif 
+
+@if($details->assignment_sme_file)
+    <h5>Download Feed Back</h5>
+    <div class="flex-align gap-8 mt-1">
+        <a href="{{ asset('uploads/assignment/'.$details->assignment_sme_file) }}" class="py-9 w-100 "><i class="ph ph-download"></i> Download </a>
+    </div>
+@endif
+
+@if ( $details->assignment_remark !='')
+    <h5>Remark</h5>
+    <div class="flex-align gap-8 mt-1">
+        <p>{{ $details->assignment_remark }}</p>
+    </div>
+
+@endif
+
 
 
     </div>
