@@ -25,7 +25,7 @@ class AssignmentController extends Controller
         }else{
             $smeIdToFind=  Auth::guard('admin')->user()->id;
             $courseIds = Course::whereRaw("FIND_IN_SET($smeIdToFind, sme_id) > 0")->where('status', 1)->get('id');
-            $datas = Coursemap::whereIn('course_id', $courseIds)->whereIn('assignment_status', $status)->orderBy('updated_at', 'desc')->with('course','user','lob')->get();   
+            $datas = Coursemap::whereIn('course_id', $courseIds)->whereIn('assignment_status', $status)->orderBy('assignment_upload_date', 'desc')->with('course','user','lob')->get();   
         }
          //--- Integrating This Collection Into Datatables
          return Datatables::of($datas)
@@ -57,7 +57,7 @@ class AssignmentController extends Controller
                     return $sme_option;
                 }) 
                 ->addColumn('assignment_assign', function(Coursemap $data) {
-                    return $data->sme->name;
+                    return ($data->sme)?$data->sme->name:'';
                 }) 
                 
                 ->addColumn('assignment_status', function(Coursemap $data) {
@@ -162,6 +162,7 @@ class AssignmentController extends Controller
 
         $data->assignment_status = $request->input('status');
         $data->assignment_remark = $request->input('remark');
+        $data->assignment_upload_date=date('Y-m-d');;     
         $data->update();
         return redirect()->back()->with('success','Update Successfully');
     }

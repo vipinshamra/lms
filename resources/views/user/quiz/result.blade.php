@@ -93,7 +93,7 @@
 <p class="pb-10  text-success">Currect Answer: 
     @if ($ans->questions->correct_answer =='A')  
         <strong>{{ $ans->questions->option_a }}</strong>   
-    @elseif ($ans->questions->correct_answer =='A')  
+    @elseif ($ans->questions->correct_answer =='B')  
         <strong>{{ $ans->questions->option_b }}</strong>
     @elseif ($ans->questions->correct_answer =='C') 
         <strong>{{ $ans->questions->option_c  }}</strong>

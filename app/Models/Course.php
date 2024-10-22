@@ -35,6 +35,13 @@ class Course extends Authenticatable
         return $query->where('status', 1);
     }
 
+
+    public function updateby(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'uploader', 'id'); 
+    }
+
+    
    
 }
 

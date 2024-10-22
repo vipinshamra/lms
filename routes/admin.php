@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\AssignmentController;
 use App\Http\Controllers\Admin\TaController;
+use App\Http\Controllers\Admin\ReportsController;
 ////Admin
 Route::prefix('admin')->group( function(){
 
@@ -59,18 +60,7 @@ Route::middleware(['admin', 'role:1'])->prefix('admin')->group( function(){
     Route::get('/admin/{id}/changepassword', [AdminController::class, 'changepassword'])->name('admin.changepassword'); 
     Route::put('/admin/{id}/updatepassword', [AdminController::class, 'updatepassword'])->name('admin.updatepassword'); 
    
-    Route::get('/user', [UserController::class, 'index'])->name('user');
-    Route::get("/user/datatables", [UserController::class, 'datatables'])->name('user.datatables');
-    Route::get('/user/create', [UserController::class, 'create'])->name('user.create'); 
-    Route::post('/user/store', [UserController::class, 'store'])->name('user.store'); 
-    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit'); 
-    Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update'); 
-    Route::get('/user/status/update/{id1}/{id2}', [UserController::class, 'updateStatus'])->name('user.status.update');
-    Route::get('/user/{id}/changepassword', [UserController::class, 'changepassword'])->name('user.changepassword'); 
-    Route::put('/user/{id}/updatepassword', [UserController::class, 'updatepassword'])->name('user.updatepassword'); 
-    Route::get('/user/bulkupload', [UserController::class, 'bulkUpload'])->name('user.bulkupload'); 
-    Route::post('/user/importusercsv', [UserController::class, 'importUserCsv'])->name('user.importusercsv'); 
-     
+   
     Route::get('/course/list', [CourseController::class, 'index'])->name('course');
     Route::get("/course/datatables", [CourseController::class, 'datatables'])->name('course.datatables');
     Route::get('/course/create', [CourseController::class, 'create'])->name('course.create'); 
@@ -102,8 +92,24 @@ Route::middleware(['admin', 'role:1'])->prefix('admin')->group( function(){
     Route::get('/ta/{id}/changepassword', [TaController::class, 'changepassword'])->name('ta.changepassword'); 
     Route::put('/ta/{id}/updatepassword', [TaController::class, 'updatepassword'])->name('ta.updatepassword'); 
    
+    Route::post("/reports/assignment/export", [ReportsController::class, 'assignmentExport'])->name('reports.assignment.export');
+    Route::get("/reports/assignment/datatables", [ReportsController::class, 'assignmentDatatables'])->name('reports.assignment.datatables');
+    Route::get("/reports/assignment/", [ReportsController::class, 'assignment'])->name('reports.assignment');
+
+    Route::post("/reports/course/completion/export", [ReportsController::class, 'courseCompletionExport'])->name('reports.course.completion.export');
+    Route::get("/reports/course/completion/datatables", [ReportsController::class, 'courseCompletionDatatables'])->name('reports.course.completion.datatables');
+    Route::get("/reports/course/completion", [ReportsController::class, 'courseCompletion'])->name('reports.course.completion');
+
+    Route::post("/reports/user/details/export", [ReportsController::class, 'userDetailsExport'])->name('reports.user.details.export');
+    Route::get("/reports/user/details/datatables", [ReportsController::class, 'userDetailsDatatables'])->name('reports.user.details.datatables');
+    Route::get("/reports/user/details", [ReportsController::class, 'userDetails'])->name('reports.user.details');
+
+    Route::post("/reports/course/catalogue/export", [ReportsController::class, 'courseCatalogueExport'])->name('reports.course.catalogue.export');
+    Route::get("/reports/course/catalogue/datatables", [ReportsController::class, 'courseCatalogueDatatables'])->name('reports.course.catalogue.datatables');
+    Route::get("/reports/course/catalogue", [ReportsController::class, 'courseCatalogue'])->name('reports.course.catalogue');
 
 });
+
 
 Route::middleware(['admin', 'role:2'])->prefix('admin')->group( function(){
    
@@ -113,4 +119,21 @@ Route::middleware(['admin', 'role:2'])->prefix('admin')->group( function(){
     Route::put('/assignment/{id}', [AssignmentController::class, 'update'])->name('assignment.update'); 
     Route::post('/assignment/sme/update/', [AssignmentController::class, 'smeUpdate'])->name('assignment.sme.update');
 
+});
+
+
+Route::middleware(['admin', 'role:3'])->prefix('admin')->group( function(){
+   
+    Route::get('/user', [UserController::class, 'index'])->name('user');
+    Route::get("/user/datatables", [UserController::class, 'datatables'])->name('user.datatables');
+    Route::get('/user/create', [UserController::class, 'create'])->name('user.create'); 
+    Route::post('/user/store', [UserController::class, 'store'])->name('user.store'); 
+    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit'); 
+    Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update'); 
+    Route::get('/user/status/update/{id1}/{id2}', [UserController::class, 'updateStatus'])->name('user.status.update');
+    Route::get('/user/{id}/changepassword', [UserController::class, 'changepassword'])->name('user.changepassword'); 
+    Route::put('/user/{id}/updatepassword', [UserController::class, 'updatepassword'])->name('user.updatepassword'); 
+    Route::get('/user/bulkupload', [UserController::class, 'bulkUpload'])->name('user.bulkupload'); 
+    Route::post('/user/importusercsv', [UserController::class, 'importUserCsv'])->name('user.importusercsv'); 
+     
 });

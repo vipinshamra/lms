@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 18, 2024 at 06:04 AM
+-- Generation Time: Oct 22, 2024 at 07:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -89,13 +89,15 @@ CREATE TABLE `coursemaps` (
   `quiz_status` int(11) NOT NULL DEFAULT 0,
   `quiz_score` int(11) NOT NULL DEFAULT 0,
   `assignment_status` int(11) NOT NULL DEFAULT 0,
-  `assignment_file` varchar(255) NOT NULL,
-  `assignment_remark` text NOT NULL,
+  `assignment_file` varchar(255) DEFAULT NULL,
+  `assignment_remark` text DEFAULT NULL,
   `assignment_download_status` int(11) NOT NULL DEFAULT 0,
   `assignment_assign` varchar(255) DEFAULT NULL COMMENT 'sme id',
   `assignment_sme_file` varchar(250) DEFAULT NULL,
+  `is_complete` int(11) NOT NULL DEFAULT 0,
   `is_read_video` text DEFAULT NULL,
   `is_read_docs` text DEFAULT NULL,
+  `assignment_upload_date` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -104,9 +106,9 @@ CREATE TABLE `coursemaps` (
 -- Dumping data for table `coursemaps`
 --
 
-INSERT INTO `coursemaps` (`id`, `user_id`, `course_id`, `lob_id`, `quiz_status`, `quiz_score`, `assignment_status`, `assignment_file`, `assignment_remark`, `assignment_download_status`, `assignment_assign`, `assignment_sme_file`, `is_read_video`, `is_read_docs`, `created_at`, `updated_at`) VALUES
-(6, 2, 1, 1, 1, 6, 3, '1728849065.pdf', 'dasbjdhbs scasdfdsf', 1, '9', '1729176751.pdf', '3', '1,2', '2024-10-13 08:50:01', '2024-10-17 13:23:55'),
-(8, 2, 2, 1, 0, 0, 0, '', '', 0, NULL, NULL, NULL, NULL, '2024-10-17 13:26:20', '2024-10-17 13:26:20');
+INSERT INTO `coursemaps` (`id`, `user_id`, `course_id`, `lob_id`, `quiz_status`, `quiz_score`, `assignment_status`, `assignment_file`, `assignment_remark`, `assignment_download_status`, `assignment_assign`, `assignment_sme_file`, `is_complete`, `is_read_video`, `is_read_docs`, `assignment_upload_date`, `created_at`, `updated_at`) VALUES
+(11, 2, 1, 1, 1, 6, 1, '1729453669.pdf', NULL, 1, '8', NULL, 1, '1,2,3', '1,2,3', '2024-10-20', '2024-10-20 12:05:18', '2024-10-20 14:47:04'),
+(12, 2, 2, 1, 1, 5, 1, '1729453897.pdf', NULL, 1, '8', NULL, 1, '4,6', '5,6', '2024-10-20', '2024-10-20 12:05:18', '2024-10-20 14:45:46');
 
 -- --------------------------------------------------------
 
@@ -135,7 +137,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `course_id`, `course_name`, `description`, `image`, `assignment`, `sme_id`, `lob_id`, `author`, `uploader`, `status`, `updated_at`, `created_at`) VALUES
-(1, 9396, 'Mercedes Hogan', 'Debitis possimus in', '1728577424.jpg', '1728577424.pdf', '8,9', '1,2', '', 0, 1, '2024-10-13 08:36:21', '2024-10-10 10:53:44'),
+(1, 9396, 'Mercedes Hogan', 'Debitis possimus in', '1728577424.jpg', '1728577424.pdf', '8,9', '1,2', '', 1, 1, '2024-10-22 04:54:46', '2024-10-10 10:53:44'),
 (2, 9107, 'Nasim Hanson', 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,', '1728578493.jpg', '1728578911.pdf', '8,9', '1,2', 'Author name', 1, 1, '2024-10-17 10:34:27', '2024-10-10 11:11:33');
 
 -- --------------------------------------------------------
@@ -372,8 +374,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('L6AjA7yOInjDeR51bOF0mB2ym2FEMagBlPULbrzf', 2, '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoid1htbGNvRVoxTGliV0dlQXJoN1N2VkpGaWxNOXV1R1dWS0tvMzdCYiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTI6Imh0dHA6Ly9sb2NhbGhvc3QvbGFyYXZlbC9sbXMvcHVibGljL2NvdXJzZS9kZXRhaWxzLzIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO3M6NTI6ImxvZ2luX2FkbWluXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1729193015),
-('VEfwgei5ewyfKylS8N7AGIAZ3AGpS1TclBknXSIJ', NULL, '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidm1FTWF3VGNxZ2FMMElnTE9ZRmlaa0ZDSjhXUEFiUjdadFNVTk0xQSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NjI6Imh0dHA6Ly9sb2NhbGhvc3QvbGFyYXZlbC9sbXMvcHVibGljL2FkbWluL3RhLzEwL2NoYW5nZXBhc3N3b3JkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fYWRtaW5fNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1729224255);
+('4BQ2buGqf0O20szIl0HcCf0PpPcZrlYfk6HP7pCJ', NULL, '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieGVYSXE1MXlOemtITDhXa2dvalRVY1ZLNVl5cDJEREVXS0J5RU1GeiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NjY6Imh0dHA6Ly9sb2NhbGhvc3QvbGFyYXZlbC9sbXMvcHVibGljL2FkbWluL3JlcG9ydHMvY291cnNlL2NhdGFsb2d1ZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX2FkbWluXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1729573782),
+('Xo3hW7ERCo2lYMQC9MdC3u7ETv7wgeuipIsFEnbY', NULL, '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiUlloTml3RzZpQUw0NFdla1ZIS1BjdXBrTWdLMXlOTjB0T0RkR0J5ciI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NjY6Imh0dHA6Ly9sb2NhbGhvc3QvbGFyYXZlbC9sbXMvcHVibGljL2FkbWluL3JlcG9ydHMvY291cnNlL2NhdGFsb2d1ZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX2FkbWluXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1729543101);
 
 -- --------------------------------------------------------
 
@@ -435,12 +437,18 @@ CREATE TABLE `user_quiz_answers` (
 --
 
 INSERT INTO `user_quiz_answers` (`id`, `course_id`, `user_id`, `question_id`, `answer`, `updated_at`, `created_at`) VALUES
-(50, 1, 2, 3, 'A', '2024-10-17 13:23:35', '2024-10-17 13:23:35'),
-(51, 1, 2, 4, 'A', '2024-10-17 13:23:37', '2024-10-17 13:23:37'),
-(52, 1, 2, 5, 'A', '2024-10-17 13:23:46', '2024-10-17 13:23:46'),
-(53, 1, 2, 6, 'A', '2024-10-17 13:23:50', '2024-10-17 13:23:50'),
-(54, 1, 2, 7, 'A', '2024-10-17 13:23:52', '2024-10-17 13:23:52'),
-(55, 1, 2, 8, 'A', '2024-10-17 13:23:55', '2024-10-17 13:23:55');
+(56, 1, 2, 3, 'A', '2024-10-20 14:17:08', '2024-10-20 14:17:08'),
+(57, 1, 2, 4, 'A', '2024-10-20 14:17:10', '2024-10-20 14:17:10'),
+(58, 1, 2, 5, 'A', '2024-10-20 14:17:12', '2024-10-20 14:17:12'),
+(59, 1, 2, 6, 'A', '2024-10-20 14:17:14', '2024-10-20 14:17:14'),
+(60, 1, 2, 7, 'A', '2024-10-20 14:17:16', '2024-10-20 14:17:16'),
+(61, 1, 2, 8, 'A', '2024-10-20 14:17:18', '2024-10-20 14:17:18'),
+(62, 2, 2, 9, 'A', '2024-10-20 14:20:56', '2024-10-20 14:20:56'),
+(63, 2, 2, 10, 'A', '2024-10-20 14:21:01', '2024-10-20 14:21:01'),
+(64, 2, 2, 11, 'A', '2024-10-20 14:21:03', '2024-10-20 14:21:03'),
+(65, 2, 2, 12, 'A', '2024-10-20 14:21:06', '2024-10-20 14:21:06'),
+(66, 2, 2, 13, 'A', '2024-10-20 14:21:09', '2024-10-20 14:21:09'),
+(67, 2, 2, 14, 'A', '2024-10-20 14:21:13', '2024-10-20 14:21:13');
 
 --
 -- Indexes for dumped tables
@@ -563,7 +571,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `coursemaps`
 --
 ALTER TABLE `coursemaps`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `courses`
@@ -617,7 +625,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_quiz_answers`
 --
 ALTER TABLE `user_quiz_answers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

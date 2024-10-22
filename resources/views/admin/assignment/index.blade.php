@@ -29,6 +29,7 @@
 
     </div>
    
+    @include('includes.validation-error')
 
 
     <div class="card overflow-hidden">

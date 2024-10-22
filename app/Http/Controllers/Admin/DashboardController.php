@@ -5,12 +5,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Hash;
 use Auth;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Lob;
+use App\Models\Coursemap;
 
 class DashboardController extends Controller
 {
    
     public function dashboard(){
-        return view("admin.dashboard");
+        // Course Completion & Inprogress report
+        // assignment
+        // User Details
+        // Course Catalogue Report
+        $assignment=Coursemap::where('assignment_status', 1)->count();
+        $userDetails = User::count();
+        $courseCompletion = Coursemap::count();
+        $courseCatalogue=Course::where('status', 1)->count();
+        return view("admin.dashboard",compact('assignment','userDetails','courseCompletion','courseCatalogue'));
     }
 
 

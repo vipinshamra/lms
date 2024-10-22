@@ -39,6 +39,7 @@ class UserController extends Controller
                     $coursemap->lob_id= $lobIdToFind;
                     $coursemap->assignment_file='';
                     $coursemap->assignment_remark='';     
+                    $coursemap->assignment_upload_date=date('Y-m-d');;     
                     $coursemap->save();
                 }
             }
@@ -50,17 +51,102 @@ class UserController extends Controller
         return view("user.dashboard",compact('myCourses'));
     }
 
+    public function checkCourseComplete($course_id){
+
+        $user_id=  Auth::guard('web')->user()->id;
+        $details = Coursemap::where('user_id', $user_id)->where('course_id', $course_id)->with('course')->first();
+        if($details){
+            $is_read_docs = explode(",",$details->is_read_docs);
+            $is_read_video = explode(",",$details->is_read_video);
+
+            $documentLessons = Module::where('course_id', $course_id)
+                                ->whereNotNull('document')
+                                ->where('document', '!=', '')
+                                ->pluck('id')->toArray();
+
+            $videoLessons = Module::where('course_id', $course_id)
+                            ->whereNotNull('video')
+                            ->where('video', '!=', '')
+                            ->pluck('id')->toArray();
+
+            $quiz=true;
+            if ($quiz){
+                    $assignment = $details->quiz_status==1?true:false;
+            }
+            $assignment=true;
+            if ($details->course->assignment !=''){
+                $assignment = $details->assignment_status==1?true:false;
+            } 
+
+            $matchDocs = empty(array_diff($documentLessons, $is_read_docs));
+            $matchVideo = empty(array_diff($videoLessons, $is_read_video));
+        
+            if($matchDocs && $matchVideo && $quiz && $assignment){
+                $details->is_complete = 1;
+                $details->save();
+            }
+        }
+
+    }
     public function course($course_id, $module_type='',$module_id=''){
 
         $user_id=  Auth::guard('web')->user()->id;
         $details = Coursemap::where('user_id', $user_id)->where('course_id', $course_id)->with('course')->first();
+    
         if($module_id!=''){
         $lesson = Module::where('course_id', $course_id)->where('id', $module_id)->first();
         }else{
         $lesson = Module::where('course_id', $course_id)->first();
         }
         if($details && $lesson){
-            //  dd($lesson->video);
+            $is_read_docs = explode(",",$details->is_read_docs);
+            $is_read_video = explode(",",$details->is_read_video);
+            $modules = $details->course->module;
+            foreach ($modules as $key => $module) {
+                $module->video_unlocked =false;
+                $module->document_unlocked =false;
+                if ($key == 0) {
+                    // Always unlock the first lesson
+                    $module->video_unlocked = true;
+                    if($module->video !='' && !in_array($module->id, $is_read_video)){
+                        $module->video_unlocked = true;
+                    }
+                    elseif($module->document !='' && in_array($module->id, $is_read_docs)){
+                        $module->document_unlocked =true;
+                    }
+                } else {
+                    
+                    if(in_array($modules[$key - 1]->id, $is_read_video)){
+                        if($module->video !=''){
+                            $module->video_unlocked = true;
+                            if(in_array($module->id, $is_read_video)){
+                                $module->document_unlocked =true;
+                            }
+                        }elseif($module->document !=''){
+                            $module->document_unlocked =true;
+                        }
+                    }
+                    if(in_array($modules[$key - 1]->id, $is_read_docs)){
+                        if($module->video !=''){
+                            $module->video_unlocked = true;
+                            if(in_array($module->id, $is_read_video)){
+                                $module->document_unlocked =true;
+                            }
+                        }elseif($module->document !=''){
+                            $module->document_unlocked =true;
+                        }
+                    }
+                }
+                if($module_id!=''){
+                    if($module_id == $module->id){
+                        if($module->video_unlocked == false && $module->document_unlocked == false){
+                            return redirect()->back()->with('error', 'not found');   
+                        }   
+                    }
+                }
+            }
+            $this->checkCourseComplete($course_id);
+            
             return view("user.course_details",compact('module_id','module_type','details','lesson'));
 
         } else {
@@ -118,6 +204,7 @@ class UserController extends Controller
                 $file->move(public_path('uploads/assignment'), $fileName);
                 $details->assignment_file =$fileName;
                 $details->assignment_status =2;//for review
+                $details->assignment_upload_date=date('Y-m-d');;     
                 $details->update();
 
                 return redirect()->back()->with('success','upload successfully');

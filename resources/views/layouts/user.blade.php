@@ -61,7 +61,14 @@
         margin-inline-start: auto !important
     }
 
-
+    .sidebar-menu__item.activePage .sidebar-menu__link {
+        /* background-color: hsl(var(--main)); */
+        background-color: #87409d;
+        /* color: hsl(var(--white)); */
+    }
+    .top-header-bg{
+    background-color: #43224D;
+    }
 </style>
 
 <aside class="sidebar">
@@ -93,12 +100,12 @@
 <!-- ============================ Sidebar End  ============================ -->
 
     <div class="dashboard-main-wrapper">
-        <div class="top-navbar flex-between gap-16">
+        <div class="top-navbar flex-between gap-16 top-header-bg">
 
     <div class="flex-align gap-16">
         <!-- Toggle Button Start -->
-         <button type="button" class="toggle-btn d-flex text-26 text-gray-500"><i class="ph ph-list"></i></button>
-         <button type="button" class="sidebar-show-btn d-xl-none d-flex text-26 text-gray-500"><i class="ph ph-list"></i></button>
+         <button type="button" class="toggle-btn d-flex text-26 text-gray-500"><i class="ph ph-list text-white"></i></button>
+         <button type="button" class="sidebar-show-btn d-xl-none d-flex text-26 text-gray-500"><i class="ph ph-list text-white"></i></button>
         <!-- Toggle Button End -->
         
         <form action="#" class="w-350 d-sm-block d-none">
@@ -206,7 +213,7 @@
 
         <!-- User Profile Start -->
         <div class="dropdown">
-            <button class="users arrow-down-icon border border-gray-200 rounded-pill p-4 d-inline-block pe-40 position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="users arrow-down-icon border border-gray-200 bg-main-50 hover-bg-main-100 rounded-pill p-4 d-inline-block pe-40 position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="position-relative">
                     <img src="{{ asset('assets/images/user.png') }}" alt="Image" class="h-32 w-32 rounded-circle">
                     <span class="activation-badge w-8 h-8 position-absolute inset-block-end-0 inset-inline-end-0"></span>

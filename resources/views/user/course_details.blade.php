@@ -79,18 +79,9 @@
                 @php
                     $is_read_docs = explode(",",$details->is_read_docs);
                     $is_read_video = explode(",",$details->is_read_video);
-                    $lock_open=1;
                 @endphp
                 @foreach ($details->course->module as $key=> $module)
-                @php
-                    if($module_id==''){
-                        $module_id = $module->id;
-                    }
-                    $video_lock = in_array( $module->id, $is_read_video )?1:1;
-                    $document_lock = in_array( $module->id, $is_read_docs )?1:1;
-
-                    
-                    @endphp
+                
                 <div class="course-item">
                     <button type="button" class="course-item__button {{ $module->id == $module_id ?'active':'' }} flex-align gap-4 w-100 p-16 border-bottom border-gray-100">
                         <span class="d-block text-start">
@@ -103,9 +94,9 @@
                         <ul class="course-list p-16 pb-0">
                             @if ($module->video !='')
                             <li class="course-list__item flex-align gap-8 mb-16 {{ in_array( $module->id, $is_read_video)?'active':'' }}">
-                                <span class="circle flex-shrink-0 text-32 d-flex text-gray-200"><i class="ph ph-{{ $video_lock?'circle':'lock-key' }}"></i></span>
+                                <span class="circle flex-shrink-0 text-32 d-flex text-gray-200"><i class="ph ph-{{  $module->video_unlocked?'circle':'lock-key' }}"></i></span>
                                 <div class="w-100">
-                                    <a href="{{ $video_lock?route('user.course.module',['id1' => $details->course->id,'slug'=>'video', 'id2' => $module->id]):'' }}" class="{{ ($module->id == $module_id && $module_type == 'video')?'text-decoration-underline':'text-gray-300' }} fw-medium d-block hover-text-main-600 d-lg-block">
+                                    <a href="{{ $module->video_unlocked?route('user.course.module',['id1' => $details->course->id,'slug'=>'video', 'id2' => $module->id]):'' }}" class="{{ ($module->id == $module_id && $module_type == 'video')?'text-decoration-underline':'text-gray-300' }} fw-medium d-block hover-text-main-600 d-lg-block">
                                         <i class="ph-fill ph-video"></i> Video
                                     </a>
                                 </div>
@@ -113,11 +104,11 @@
                             @endif
                             @if ($module->document !='')
                             <li class="course-list__item flex-align gap-8 mb-16 {{ in_array( $module->id, $is_read_docs )?'active':'' }}">
-                                <span class="circle flex-shrink-0 text-32 d-flex text-gray-200"><i class="ph ph-{{   $document_lock?'circle':'lock-key' }}"></i>
+                                <span class="circle flex-shrink-0 text-32 d-flex text-gray-200"><i class="ph ph-{{  $module->document_unlocked?'circle':'lock-key' }}"></i>
 
                                 </span>
                                 <div class="w-100">
-                                    <a href="{{  $document_lock?route('user.course.module',['id1' => $details->course->id, 'slug'=>'document',  'id2' => $module->id]):'#' }}" class="{{ ($module->id == $module_id && $module_type == 'document')?'text-decoration-underline':'text-gray-300' }} fw-medium d-block hover-text-main-600 d-lg-block">
+                                    <a href="{{ $module->document_unlocked?route('user.course.module',['id1' => $details->course->id, 'slug'=>'document',  'id2' => $module->id]):'#' }}" class="{{ ($module->id == $module_id && $module_type == 'document')?'text-decoration-underline':'text-gray-300' }} fw-medium d-block hover-text-main-600 d-lg-block">
                                         <i class="ph-fill ph-file"></i> Document
                                     </a>
                                 </div>
@@ -191,7 +182,7 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="course-list__item flex-align gap-8 mb-16">
+                            <li class="course-list__item flex-align gap-8 mb-16 {{ $details->assignment_status==1?'active':'' }}">
                                 <span class="circle flex-shrink-0 text-32 d-flex text-gray-200"><i class="ph ph-circle"></i></span>
                                 <div class="w-100">
                                     <a href="{{ route('user.assignments', $details->course->id) }}" class="text-gray-300 fw-medium d-block hover-text-main-600 d-lg-block">
@@ -301,6 +292,4 @@ function updatePdfStatus() {
 @endsection
 
 
-   {{ $lesson->id }}
-   {{ $details->course->id }}
 @endsection

@@ -42,7 +42,15 @@
                                     <div class="progress-bar bg-main-600 rounded-pill" style="width: {{ $progressbar }}%"></div>
                                 </div>
                             </div>
-                            <a href="{{ route('user.course',$myCourse->course->id) }}" class="btn btn-outline-main rounded-pill py-9 w-100 mt-24"> {{ ($progressbar > 0)?'Continue':'Start' }}</a>
+                            <a href="{{ route('user.course',$myCourse->course->id) }}" class="btn btn-outline-main rounded-pill py-9 w-100 mt-24"> 
+                                @if($myCourse->is_complete==1)
+                                {{'complete'}}
+                                @elseif ($progressbar > 0)
+                                {{ 'Continue' }}
+                                @else
+                                {{ 'Start' }}
+                                @endif
+                            </a>
                         </div>
                     </div>
                 </div>

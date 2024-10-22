@@ -8,7 +8,7 @@
         <ul class="flex-align gap-4">
         <li><a href="{{ route('dashboard') }}" class="text-gray-200 fw-normal text-15 hover-text-main-600">Home</a></li>
         <li> <span class="text-gray-500 fw-normal d-flex"><i class="ph ph-caret-right"></i></span> </li>
-        <li><span class="text-main-600 fw-normal text-15">Admin</span></li>
+        <li><span class="text-main-600 fw-normal text-15">Users</span></li>
         </ul>
         </div>
 <!-- Breadcrumb End -->
@@ -29,19 +29,8 @@
 
     </div>
     
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
+    @include('includes.validation-error')
 
-@if (session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
 
 
     <div class="card overflow-hidden">
