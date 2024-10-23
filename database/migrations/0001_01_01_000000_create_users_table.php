@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('designation')->nullable();
             $table->string('grade')->nullable();
             $table->string('employment_type')->nullable();
-            $table->string('actual_date')->nullable();
+            $table->string('doj')->nullable();
             $table->string('expectance_date')->nullable();
             $table->string('recruiter')->nullable();
             $table->string('offer_revoke')->nullable();

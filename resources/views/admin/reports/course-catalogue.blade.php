@@ -36,27 +36,14 @@
             <table id="assignmentTable" class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        {{-- Course Code
-                        Course Name
-                        Description	
-                        Module Duration
-                        Is Active	    
-                        Is Assessment Available
-                        Total Modules
-                        Created By	
-                        Created Date
-                        IsApplicable To LoB Name --}}
-
+                        <th class="h6 text-gray-300" >{{ __('Course Code') }}</th>
                         <th class="h6 text-gray-300" >{{ __('Course Name') }}</th>
-                        <th class="h6 text-gray-300" >{{ __('Description') }}</th>
+                        {{-- <th class="h6 text-gray-300" >{{ __('Description') }}</th> --}}
                         <th class="h6 text-gray-300" >{{ __('Module Duration') }}</th>
-                        <th class="h6 text-gray-300" >{{ __('Is Active') }}</th>
+                        <th class="h6 text-gray-300" >{{ __('Status') }}</th>
                         <th class="h6 text-gray-300" >{{ __('Is Assessment Available') }}</th>
                         <th class="h6 text-gray-300" >{{ __('Total Modules') }}</th>
-                        <th class="h6 text-gray-300" >{{ __('Created By') }}</th>
                         <th class="h6 text-gray-300" >{{ __('Created Date') }}</th>
-                        <th class="h6 text-gray-300" >{{ __('IsApplicable To LoB Name') }}</th>
-
                     </tr>
                 </thead>
                 
@@ -98,12 +85,16 @@
                       
                      
                         <div class="d-flex align-items-center justify-content-center gap-8 mt-24">
-                            <button type="reset" class="btn bg-danger-600 hover-bg-danger-800 border-danger-600 hover-border-danger-800 text-md px-24 py-12 radius-8"> 
-                                Cancel
+                            <button type="reset" class="btn filter bg-danger-600 hover-bg-danger-800 border-danger-600 hover-border-danger-800 text-md px-24 py-12 radius-8"> 
+                                <i class="ph ph-arrow-clockwise"></i>
                             </button>
                             <button type="submit" class="btn bg-main-600 hover-bg-main-800 border-main-600 hover-border-main-800 text-md px-24 py-12 radius-8"> 
-                                Download
+                                <i class="ph ph-download"></i>
                             </button>
+                            <button type="button" class="btn filter bg-main-600 hover-bg-main-800 border-main-600 hover-border-main-800 text-md px-24 py-12 radius-8"> 
+                                <i class="ph ph-funnel"></i>
+                            </button>
+                       
                         </div>
                     </div>
                 </form>
@@ -126,18 +117,23 @@ $(document).ready(function() {
             lengthChange: false,
             info: false,   // Bottom Left Text => Showing 1 to 10 of 12 entries
             paging: true,
-
-               ajax: '{{ route('reports.course.catalogue.datatables') }}',
+            ajax: {
+                        url:  '{{ route('reports.course.catalogue.datatables') }}',
+                        data: function (d) {
+                            d.start_date = $('#startDate').val();
+                            d.end_date = $('#endDate').val();
+                        }
+                    },
+            //    ajax: '{{ route('reports.course.catalogue.datatables') }}',
                columns: [
+                        { data: 'course_id', name: 'course_id' },
                         { data: 'course_name', name: 'course_name' },
-                        { data: 'description', name: 'description' },
+                        // { data: 'description', name: 'description' },
                         { data: 'module_duration', name: 'module_duration' },
-                        { data: 'assignment_status',  name: 'assignment_status'  },
-                        { data: 'is_assessment_available', name: 'is_assessment_available' },
+                        { data: 'status',  name: 'status'  },
+                        { data: 'is_assignment', name: 'is_assignment' },
                         { data: 'total_modules',  name: 'total_modules'  },
-                        { data: 'uploader',  name: 'uploader'  },
                         { data: 'created_at', name: 'created_at' },
-                        { data: 'lob_id', name: 'lob_id' },
                      ],
                 language : {
                     processing: '<img src="{{asset('assets/images/logo/logo.png')}}">'
@@ -147,11 +143,14 @@ $(document).ready(function() {
                 },
         });	
 
-        // $('#filter-form').on('submit', function (e) {
-        //     e.preventDefault();
-        //     table.ajax.reload(); // Reload data with filters
-        // });
- 
+        $('.filter').on('click', function (e) {
+            e.preventDefault();
+            table.ajax.reload(); // Reload data with filters
+        });
+        $('#filter-form').on('submit', function (e) {
+            e.preventDefault();
+            table.ajax.reload(); // Reload data with filters
+        });
 });
 
 </script>

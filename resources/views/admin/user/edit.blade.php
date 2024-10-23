@@ -94,40 +94,56 @@
                             </div>
                             
                  
+                 
                             <div class="col-sm-6 col-xs-6">
-                                <label for="employment_type" class="form-label mb-8 h6">Employment Type</label>
-                                <input type="text" class="form-control py-11 @error('employment_type') is-invalid @enderror"  value="{{ $user->employment_type }}"  name="employment_type" id="employment_type" placeholder="Enter Employment Type">
-                                @error('employment_type') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                                <label for="doj" class="form-label mb-8 h6">Date Of Joining</label>
+                                <input type="date" class="form-control py-11 @error('doj') is-invalid @enderror" value="{{ $user->doj }}"  name="doj" id="doj" placeholder="">
+                                @error('doj') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                             </div>
                             
                  
                             <div class="col-sm-6 col-xs-6">
-                                <label for="expectance_date" class="form-label mb-8 h6">Offer Acceptance Date</label>
-                                <input type="date" class="form-control py-11 @error('expectance_date') is-invalid @enderror" value="{{ $user->expectance_date }}"  name="expectance_date" id="expectance_date" placeholder="">
-                                @error('expectance_date') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                                <label for="gender" class="form-label mb-8 h6">Gender</label>
+                                <input type="text" class="form-control py-11 @error('gender') is-invalid @enderror"  value="{{ $user->gender }}"  name="gender" id="gender" placeholder="Enter Gender">
+                                @error('gender') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                             </div>
-                            
-                 
                             <div class="col-sm-6 col-xs-6">
-                                <label for="actual_date" class="form-label mb-8 h6">Date of Joining</label>
-                                <input type="date" class="form-control py-11 @error('actual_date') is-invalid @enderror" value="{{ $user->actual_date }}" name="actual_date" id="actual_date" placeholder="">
-                                @error('actual_date') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                                <label for="sub_lob" class="form-label mb-8 h6">Sub Lob</label>
+                                <input type="text" class="form-control py-11 @error('sub_lob') is-invalid @enderror"  value="{{ $user->sub_lob }}"  name="sub_lob" id="sub_lob" placeholder="Enter Sub Lob">
+                                @error('sub_lob') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                             </div>
-                            
-                 
                             <div class="col-sm-6 col-xs-6">
-                                <label for="recruiter" class="form-label mb-8 h6">Recruiter</label>
-                                <input type="text" class="form-control py-11 @error('recruiter') is-invalid @enderror" value="{{ $user->recruiter }}"  name="recruiter" id="recruiter" placeholder="Enter Recruiter">
-                                @error('recruiter') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                                <label for="college_name" class="form-label mb-8 h6">College Name</label>
+                                <input type="text" class="form-control py-11 @error('college_name') is-invalid @enderror"  value="{{ $user->college_name }}"  name="college_name" id="college_name" placeholder="Enter College Name">
+                                @error('college_name') <div class="invalid-feedback">{{ $message }}</div> @enderror  
                             </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <label for="location" class="form-label mb-8 h6">Location</label>
+                                <input type="text" class="form-control py-11 @error('location') is-invalid @enderror"  value="{{ $user->location }}"  name="location" id="location" placeholder="Enter Location">
+                                @error('location') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <label for="specialization" class="form-label mb-8 h6">Specialization</label>
+                                <input type="text" class="form-control py-11 @error('specialization') is-invalid @enderror"  value="{{ $user->specialization }}"  name="specialization" id="specialization" placeholder="Enter Specialization">
+                                @error('specialization') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <label for="college_location" class="form-label mb-8 h6">College Location</label>
+                                <input type="text" class="form-control py-11 @error('college_location') is-invalid @enderror"  value="{{ $user->college_location }}"  name="college_location" id="college_location" placeholder="Enter College Location">
+                                @error('college_location') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <label for="offer_release_spoc" class="form-label mb-8 h6">Offer Release Spoc</label>
+                                <input type="text" class="form-control py-11 @error('offer_release_spoc') is-invalid @enderror"  value="{{ $user->offer_release_spoc }}"  name="offer_release_spoc" id="offer_release_spoc" placeholder="Enter Offer Release Spoc">
+                                @error('offer_release_spoc') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <label for="trf" class="form-label mb-8 h6">TRF</label>
+                                <input type="text" class="form-control py-11 @error('trf') is-invalid @enderror"  value="{{ $user->trf }}"  name="trf" id="trf" placeholder="Enter RTF">
+                                @error('trf') <div class="invalid-feedback">{{ $message }}</div> @enderror  
+                            </div>
+                                                                                    
                             
-                 
-                            {{-- <div class="col-sm-6 col-xs-6">
-                                <label for="offer_revoke" class="form-label mb-8 h6">Offer revoke</label>
-                                <input type="text" class="form-control py-11 @error('offer_revoke') is-invalid @enderror"  value="{{ $user->offer_revoke }}"  name="offer_revoke" id="offer_revoke" placeholder="Enter Offer Revoke">
-                                @error('offer_revoke') <div class="invalid-feedback">{{ $message }}</div> @enderror  
-                            </div>
-                             --}}
 
                             <div class="col-12">
                                 <div class="flex-align justify-content-end gap-8">

@@ -92,10 +92,15 @@ class UserController extends Controller
             'lob_id' => 'required',         
             'designation'=> 'required',
             'grade'=> 'required',
-            'employment_type'=> 'required',
-            'expectance_date'=> 'required',
-            'actual_date'=> 'required',
-            'recruiter'=> 'required',
+            'doj'=> 'required',
+            'gender'=> 'required',
+            'sub_lob'=> 'required',
+            'college_name'=> 'required',
+            'location'=> 'required',
+            'specialization'=> 'required',
+            'college_location'=> 'required',	
+            'offer_release_spoc'=> 'required',
+            'trf'=> 'required',
             ],
             [
             'lob_id.required' => 'Please select your LOB.',
@@ -151,10 +156,15 @@ class UserController extends Controller
                 'lob_id' => 'required',
                 'designation'=> 'required',
                 'grade'=> 'required',
-                'employment_type'=> 'required',
-                'expectance_date'=> 'required',
-                'actual_date'=> 'required',
-                'recruiter'=> 'required',
+                'doj'=> 'required',
+                'gender'=> 'required',
+                'sub_lob'=> 'required',
+                'college_name'=> 'required',
+                'location'=> 'required',
+                'specialization'=> 'required',
+                'college_location'=> 'required',	
+                'offer_release_spoc'=> 'required',
+                'trf'=> 'required',
             ],
          [
             'lob_id.required' => 'Please select your LOB.',
@@ -165,7 +175,7 @@ class UserController extends Controller
         $input = $request->all();
         $user->update($input);
 
-        return redirect()->back()->with('success','admin update successfully');
+        return redirect()->back()->with('success','update successfully');
     }
 
     public function updateStatus($id,$status){
@@ -281,7 +291,7 @@ class UserController extends Controller
                             'grade' => $data[7],	
                             'employment_type' => $data[8],
                             'actual_date' => $data[9],
-                            'expectance_date' => $data[10],	
+                            'doj' => $data[10],	
                             'recruiter' => $data[11],
                             'password'=>Hash::make($pass),
                             'token'=>$token,

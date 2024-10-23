@@ -26,17 +26,23 @@ class User extends Authenticatable
         'grade',
         'lob_id',
         'department',
-        'employment_type',
-        'expectance_date',
-        'actual_date',
-        'recruiter',
-        'offer_revoke',
+        'doj',
+
+        'gender',
+        'sub_lob',
+        'college_name',
+        'location',
+        'specialization',
+        'college_location',	
+        'offer_release_spoc',
+        'trf',
+
+    
         'password',
         'token',
         'status',
         'created_at',
         'updated_at'
-
     ];
 
     /**

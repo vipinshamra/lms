@@ -83,12 +83,16 @@
                       
                      
                         <div class="d-flex align-items-center justify-content-center gap-8 mt-24">
-                            <button type="reset" class="btn bg-danger-600 hover-bg-danger-800 border-danger-600 hover-border-danger-800 text-md px-24 py-12 radius-8"> 
-                                Cancel
+                            <button type="reset" class="btn filter bg-danger-600 hover-bg-danger-800 border-danger-600 hover-border-danger-800 text-md px-24 py-12 radius-8"> 
+                                <i class="ph ph-arrow-clockwise"></i>
                             </button>
                             <button type="submit" class="btn bg-main-600 hover-bg-main-800 border-main-600 hover-border-main-800 text-md px-24 py-12 radius-8"> 
-                                Download
+                                <i class="ph ph-download"></i>
                             </button>
+                            <button type="button" class="btn filter bg-main-600 hover-bg-main-800 border-main-600 hover-border-main-800 text-md px-24 py-12 radius-8"> 
+                                <i class="ph ph-funnel"></i>
+                            </button>
+                       
                         </div>
                     </div>
                 </form>
@@ -111,7 +115,14 @@ $(document).ready(function() {
             lengthChange: false,
             info: false,   // Bottom Left Text => Showing 1 to 10 of 12 entries
             paging: true,
-               ajax: '{{ route('reports.assignment.datatables') }}',
+            //    ajax: '{{ route('reports.assignment.datatables') }}',
+               ajax: {
+                        url: '{{ route('reports.assignment.datatables') }}',
+                        data: function (d) {
+                            d.start_date = $('#startDate').val();
+                            d.end_date = $('#endDate').val();
+                        }
+                    },
                columns: [
                         { data: 'user_name', name: 'user_name' },
                         { data: 'course_name', name: 'course_name' },
@@ -128,12 +139,15 @@ $(document).ready(function() {
                 },
         });	
 
-        // $('#filter-form').on('submit', function (e) {
-        //     e.preventDefault();
-        //     table.ajax.reload(); // Reload data with filters
-        // });
+        $('.filter').on('click', function (e) {
+            e.preventDefault();
+            table.ajax.reload(); // Reload data with filters
+        });
  
-});
+});   $('#filter-form').on('submit', function (e) {
+            e.preventDefault();
+            table.ajax.reload(); // Reload data with filters
+        });
 
 </script>
 
